@@ -40,26 +40,68 @@ const plant = new Plant();
 
 
 
-// METHOD DECORATOR 
+// METHOD DECORATOR  // Property Decorator
 function editable(value: boolean) {
-  return function(target: any) {
-    
-  }
-}
-class Project {
-  projectName: string; 
-  
-  constructor(name: string) {
-    this.projectName = name; 
-  }
-  calcBudget(n?: number) {
-    console.log(1000); 
+  return function(target: any, propName: string, descriptor: PropertyDescriptor) {
+    descriptor.writable = value; 
   }
 }
 
-const project = new Project('super project'); 
-project.calcBudget(); // 1000
-project.calcBudget = function(n:number){
-  console.log(n)
+function overwritable(value: boolean) {
+  return function(target: any, propName: string): any {
+    const newDescriptor: PropertyDescriptor = {
+      writable: value
+    };
+    return newDescriptor; 
+  }
 }
-project.calcBudget(3333); 
+
+class Project {
+  @overwritable(false)
+  projectName: string; 
+  otherName: string; 
+  
+  constructor(name: string, otherName: string) {
+    this.projectName = name; 
+    this.otherName = otherName; 
+  }
+  @editable(false)  // blocks ability to edit this method 
+  calcBudget() {
+    console.log(project.projectName, project.otherName, 1000); 
+  }
+}
+
+const project = new Project('super project', 'awesome'); 
+project.calcBudget(); // 1000
+project.calcBudget = function(){
+  console.log(project.projectName, 2000)
+}
+project.calcBudget(); // still 1000 if @editable(false)
+console.log(project)
+
+
+
+// Parameter Decorator
+function printInfo(target: any, methodName: string, paramIndex: number) {
+  console.log("Target: ", target);
+  console.log("methodName: ", methodName);
+  console.log("paramIndex: ", paramIndex);
+}
+
+class Course {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  printStudentNumbers(mode: string, @printInfo printAll: boolean) {
+    if(printAll) {
+      console.log(10000);
+    }else {
+      console.log(20000)
+    }
+  }
+}
+
+const course = new Course('Super Duper Course');
+course.printStudentNumbers('any name will do', true); // 10000
+course.printStudentNumbers('any name will do', false); // 20000
