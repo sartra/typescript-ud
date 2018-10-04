@@ -75,13 +75,14 @@ var Project = /** @class */ (function () {
         console.log(project.projectName, project.otherName, 1000);
     };
     __decorate([
-        overwritable(false)
+        overwritable(false) // overwritable is a PROPERTY DECORATOR 
     ], Project.prototype, "projectName", void 0);
     __decorate([
         editable(false) // blocks ability to edit this method 
     ], Project.prototype, "calcBudget", null);
     return Project;
 }());
+// create instance of class 
 var project = new Project('super project', 'awesome');
 project.calcBudget(); // 1000
 project.calcBudget = function () {
@@ -104,7 +105,7 @@ var Course = /** @class */ (function () {
             console.log(10000);
         }
         else {
-            console.log(20000);
+            console.log(200);
         }
     };
     __decorate([
@@ -114,4 +115,4 @@ var Course = /** @class */ (function () {
 }());
 var course = new Course('Super Duper Course');
 course.printStudentNumbers('any name will do', true); // 10000
-course.printStudentNumbers('any name will do', false); // 20000
+course.printStudentNumbers('any name will do', false); // 200

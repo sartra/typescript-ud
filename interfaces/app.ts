@@ -102,7 +102,7 @@ const echo2: <T>(data:T) => T = betterEcho;
 console.log(echo2<string>('some string'));
 
 // Generic classes
-class SimpleMath<T, U extends number | string> {
+class SimpleMath<T extends number | string, U extends number | string> {  // class SimpleMath<T extends U, U extends number | string> -- would mean T has to be same type as U
   baseValue: T; 
   multiplyValue: U;
   calculate(): number {
@@ -110,7 +110,7 @@ class SimpleMath<T, U extends number | string> {
   }
 }
 
-const simpleMath = new SimpleMath<number>();
+const simpleMath = new SimpleMath<number, string>();
 simpleMath.baseValue = 10; 
 simpleMath.multiplyValue = '20'; 
 console.log(simpleMath.calculate()); // 200 

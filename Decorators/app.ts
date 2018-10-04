@@ -21,7 +21,6 @@ class Car {
 }
 
 
-
 // Advanced
 function printable(constructorFn: Function) {
   constructorFn.prototype.print = function() { 
@@ -41,6 +40,7 @@ const plant = new Plant();
 
 
 // METHOD DECORATOR  // Property Decorator
+
 function editable(value: boolean) {
   return function(target: any, propName: string, descriptor: PropertyDescriptor) {
     descriptor.writable = value; 
@@ -57,7 +57,7 @@ function overwritable(value: boolean) {
 }
 
 class Project {
-  @overwritable(false)
+  @overwritable(false)  // overwritable is a PROPERTY DECORATOR 
   projectName: string; 
   otherName: string; 
   
@@ -70,7 +70,7 @@ class Project {
     console.log(project.projectName, project.otherName, 1000); 
   }
 }
-
+// create instance of class 
 const project = new Project('super project', 'awesome'); 
 project.calcBudget(); // 1000
 project.calcBudget = function(){
@@ -78,7 +78,6 @@ project.calcBudget = function(){
 }
 project.calcBudget(); // still 1000 if @editable(false)
 console.log(project)
-
 
 
 // Parameter Decorator
@@ -90,18 +89,20 @@ function printInfo(target: any, methodName: string, paramIndex: number) {
 
 class Course {
   name: string;
+
   constructor(name: string) {
     this.name = name;
   }
+
   printStudentNumbers(mode: string, @printInfo printAll: boolean) {
     if(printAll) {
       console.log(10000);
-    }else {
-      console.log(20000)
+    } else {
+      console.log(200)
     }
   }
 }
 
 const course = new Course('Super Duper Course');
 course.printStudentNumbers('any name will do', true); // 10000
-course.printStudentNumbers('any name will do', false); // 20000
+course.printStudentNumbers('any name will do', false); // 200
